@@ -87,9 +87,16 @@ equal.addEventListener("click", function () {
    let numbers = inputString.split(/\+|\-|\×|\÷/g);
    let operators = inputString.replace(/[0-9]|\./g, "").split("");
 
-   console.log(inputString);
-   console.log(operators);
-   console.log(numbers);
+   console.log('Входящая строка:', inputString);
+   console.log('Операторы:', operators);
+   console.log('Числа:', numbers);
+
+   //если один операнд в инпуте, после него нажат оператор и потом равно, в инпут вернуть просто число
+   //без этой проверки инпут "69*" после нажатия на равно показывал 0, с делением - Infinity
+   if (numbers[1] === "") {
+      input.innerHTML = numbers[0];
+      return;
+   }
 
    //ищем индекс данного оператора в строке, с помощью splice удаляем из массива чисел 2 числа, начиная с позиции, на которой стоял оператор, и заменяем удаленные два числа их произведением
    //потом удаляем оператор с массива всех операторов, по индексу,  и снова ищем индекс этого оператора в новом массиве операторов, без предыдущего оператора найденного
