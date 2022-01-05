@@ -71,7 +71,6 @@ for (let i = 0; i < operators.length; i++) {
    });
 }
 
-пше
 //очистка всего инпута на кнопку "C"
 clear.addEventListener("click", function () {
    input.innerHTML = "";
