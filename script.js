@@ -27,7 +27,7 @@ for (let i = 0; i < numbers.length; i++) {
       if (resultDisplayed === false) {
          input.innerHTML += e.target.innerHTML;
       } else if (resultDisplayed && checkOperators) {
-         // если отображается результат и был нажат оператор, то к существующему результату надо добавить оператор
+         // если отображается результат и последний символ оператор, добавить число меняем флаг на false
          resultDisplayed = false;
          input.innerHTML += e.target.innerHTML;
       } else {
@@ -61,6 +61,9 @@ for (let i = 0; i < operators.length; i++) {
       } else if (currentString.length == 0) {
          // если строка пустая, ничего не делать)
          console.log("Введите сперва число");
+      } else if (resultDisplayed && !isFinite(input.innerHTML)) {
+         // если результат отображен и в инпуте не число, обнуляем инпут
+         input.innerHTML = '';
       } else {
          // в других случаях, просто добавим этот оператор в строку
          input.innerHTML += e.target.innerHTML;
@@ -68,6 +71,7 @@ for (let i = 0; i < operators.length; i++) {
    });
 }
 
+пше
 //очистка всего инпута на кнопку "C"
 clear.addEventListener("click", function () {
    input.innerHTML = "";
