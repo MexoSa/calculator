@@ -77,8 +77,8 @@ clear.addEventListener("click", function () {
 });
 
 deleteSymbol.addEventListener("click", function () {
-   //если результат отображается, при нажатии удаляется весь результат
-   if (resultDisplayed) {
+   //если результат отображается и в поле не число, очистить инпут
+   if (resultDisplayed && !isFinite(input.innerHTML)) {
       input.innerHTML = '';
    }
    input.innerHTML = input.innerHTML.substring(0, input.innerHTML.length - 1);
