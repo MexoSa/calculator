@@ -36,13 +36,9 @@ body {
    font-size: 2rem;
    width: 100%;
    outline: none;
-   transition: border-color 0.2s ease-in-out, background-color 0.2s, box-shadow 0.2s;
    /* для скрола по горизонтали, если вводимые числа будут больше отвденного поля */
    overflow-x: auto;
-}
-
-.input:hover {
-   box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+   box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
 }
 
 .calc-row {
@@ -101,7 +97,7 @@ body {
    transition: border-color 0.2s ease-in-out, background-color 0.2s, box-shadow 0.2s;
 }
 
-.rightPanel {
+.right-panel {
    display: flex;
    flex-direction: column;
    gap: 20px;

@@ -1,64 +1,53 @@
 'use strict'
 
-const input = document.querySelector('#entryField');
-const equal = document.querySelector('#equal');
-const clear = document.querySelector('#clear');
+const input = document.querySelector('.input');
+const equal = document.querySelector('.equal');
+const clearAll = document.querySelector('.clear');
 const numbers = document.querySelectorAll('.numbers div');
 const operators = document.querySelectorAll('.operators div');
-const deleteSymbol = document.querySelector('#delete');
+const deleteSymbol = document.querySelector('.delete');
 
-let resultDisplayed = false; // для проверки, отображается ли результат(псоле нажатия равно)
+let isResultDisplayed = false; // для проверки, отображается ли результат(псоле нажатия равно)
 
-for (let i = 0; i < numbers.length; i++) {
-   numbers[i].addEventListener('click', function (e) {
+
+numbers.forEach((item) => {
+   item.addEventListener('click', (e) => {
       // сохраняем текущую входную строку и ее последний символ 
-      let currentString = input.innerHTML;
-      let lastChar = currentString[currentString.length - 1];
+      const lastChar = input.innerHTML[input.innerHTML.length - 1];
 
       //проверяем послдений символ на оператор
-      let checkOperators = false;
-      for (let i = 0; i < operators.length; i++) {
-         if (operators[i].innerHTML.includes(lastChar)) {
-            checkOperators = true;
-         }
-      }
+      let isLastCharOperator = false;
+      isLastCharOperator = Array.from(operators).map((item) => item = item.innerHTML).includes(lastChar);
 
       // если результат не отображается, просто добавляем дальше числа или операции, смотря что нажато
-      if (resultDisplayed === false) {
+      if (!isResultDisplayed) {
          input.innerHTML += e.target.innerHTML;
-      } else if (resultDisplayed && checkOperators) {
+      } else if (isResultDisplayed && isLastCharOperator) {
          // если отображается результат и был нажат оператор, то к существующему результату надо добавить оператор
-         resultDisplayed = false;
+         isResultDisplayed = false;
          input.innerHTML += e.target.innerHTML;
       } else {
          // если результат отображается и было нажато число, очищаем строку ввода и новая операция
-         resultDisplayed = false;
-         input.innerHTML = "";
-         input.innerHTML += e.target.innerHTML;
+         isResultDisplayed = false;
+         input.innerHTML = e.target.innerHTML;
       }
-   });
-}
+   })
+});
 
-for (let i = 0; i < operators.length; i++) {
-   operators[i].addEventListener("click", function (e) {
-
+operators.forEach((item) => {
+   item.addEventListener('click', (e) => {
       // сохраняем текущую входную строку и ее последний символ 
-      let currentString = input.innerHTML;
-      let lastChar = currentString[currentString.length - 1];
+      const currentString = input.innerHTML;
+      const lastChar = currentString[currentString.length - 1];
 
-      //проверяем послдений символ на оператор
-      let checkOperators = false;
-      for (let i = 0; i < operators.length; i++) {
-         if (operators[i].innerHTML.includes(lastChar)) {
-            checkOperators = true;
-         }
-      }
+      //проверяем последний символ на оператор
+      let isLastCharOperator = false;
+      isLastCharOperator = Array.from(operators).map((item) => item.innerHTML).includes(lastChar);
 
       // если последний символ в строке оператор, меняем его на нажатый только что
-      if (checkOperators) {
-         let newString = currentString.substring(0, currentString.length - 1) + e.target.innerHTML;
-         input.innerHTML = newString;
-      } else if (currentString.length == 0) {
+      if (isLastCharOperator) {
+         input.innerHTML = currentString.substring(0, currentString.length - 1) + e.target.innerHTML;
+      } else if (currentString.length === 0) {
          // если строка пустая, ничего не делать)
          console.log("Введите сперва число");
       } else {
@@ -66,24 +55,27 @@ for (let i = 0; i < operators.length; i++) {
          input.innerHTML += e.target.innerHTML;
       }
    });
-}
+});
 
 //очистка всего инпута на кнопку "C"
-clear.addEventListener("click", function () {
+clearAll.addEventListener("click", () => {
    input.innerHTML = "";
 });
 
-deleteSymbol.addEventListener("click", function () {
-   //если результат отображается, при нажатии удаляется весь результат
-   if (resultDisplayed) {
+deleteSymbol.addEventListener("click", () => {
+   //если результат отображается и он не числовой и последний символ не оператор, при нажатии удаляется весь результат(если NaN Infinity)
+   const lastChar = input.innerHTML[input.innerHTML.length - 1];
+   let isLastCharOperator = false;
+   isLastCharOperator = Array.from(operators).map((item) => item.innerHTML).includes(lastChar);
+   if (isResultDisplayed && !isFinite(input.innerHTML) && !isLastCharOperator) {
       input.innerHTML = '';
    }
    input.innerHTML = input.innerHTML.substring(0, input.innerHTML.length - 1);
 });
 
-equal.addEventListener("click", function () {
+equal.addEventListener("click", () => {
    // при нажатии на равно надо получить введенное выражение, выделить два массива, один с числами, другой с операторами
-   let inputString = input.innerHTML;
+   const inputString = input.innerHTML;
    let numbers = inputString.split(/\+|\-|\×|\÷/g);
    let operators = inputString.replace(/[0-9]|\./g, "").split("");
 
@@ -128,6 +120,6 @@ equal.addEventListener("click", function () {
    input.innerHTML = numbers[0];
 
    // нужно для корректной работы последующих нажатий в калькуляторе
-   resultDisplayed = true;
+   isResultDisplayed = true;
 });
 
